@@ -1,0 +1,6 @@
+[submodule "billing-backend"]
+	path = billing-backend
+	url = ./billing-backend/
+[submodule "billing-calculator-ui"]
+	path = billing-calculator-ui
+	url = ./billing-calculator-ui/
