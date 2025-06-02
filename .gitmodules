@@ -1,6 +1,6 @@
 [submodule "billing-backend"]
 	path = billing-backend
-	url = ./billing-backend/
+	url = git@github.com:ISAIC-Github/billing-backend.git
 [submodule "billing-calculator-ui"]
 	path = billing-calculator-ui
-	url = ./billing-calculator-ui/
+	url = git@github.com:ISAIC-Github/billing-calculator-ui.git
