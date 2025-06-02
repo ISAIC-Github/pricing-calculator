@@ -1,0 +1,10 @@
+# Start from an official Ubuntu image
+FROM node:23-alpine
+RUN apk add curl && apk add bash
+EXPOSE 8888
+WORKDIR /app
+COPY billing-backend/package.json ./
+COPY billing-backend/report_templates/. ./dist/report_templates/.
+COPY billing-backend/. .
+RUN npm i
+CMD ["node", "./dist/main.js"]

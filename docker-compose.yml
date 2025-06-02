@@ -1,0 +1,60 @@
+services:
+  calc-carbone:
+    image: carbone/carbone-ee:latest
+    container_name: calc-carbone
+    platform: linux/amd64
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    environment:
+      - CARBONE_EE_STUDIO=true
+      - CARBONE_EE_LICENSE="MY_CARBONE_LICENSE"
+      - LANG=C.UTF-8
+    ports: 
+      - 4000:4000
+  calc-ui-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: calc-ui-backend
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    env_file:
+      - .env
+    depends_on: 
+      - calc-carbone
+  calc-ui-frontend:
+    build:
+      context: ./billing-calculator-ui
+      args:
+        - REACT_APP_CALC_API_BASE_URL=${REACT_APP_CALC_API_BASE_URL}  # Pass the variable at build time
+    container_name: calc-ui-frontend
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    env_file:
+      - .env
+  calc-nginx-proxy:
+    build:
+      dockerfile: ./Dockerfile.proxies
+    container_name: calc-nginx-proxy
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    env_file:
+      - .env
+    ports:
+      - "9999:9999"
+      - "10000:10000"
+    depends_on:
+      - calc-ui-frontend
+    
